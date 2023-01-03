@@ -1,0 +1,10 @@
+#ifndef GENETICALG_KNAPSACKPROBLEM_H
+#define GENETICALG_KNAPSACKPROBLEM_H
+
+
+class KnapsackProblem {
+
+};
+
+
+#endif //GENETICALG_KNAPSACKPROBLEM_H

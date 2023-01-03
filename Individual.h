@@ -1,0 +1,10 @@
+#ifndef GENETICALG_INDIVIDUAL_H
+#define GENETICALG_INDIVIDUAL_H
+
+
+class Individual {
+
+};
+
+
+#endif //GENETICALG_INDIVIDUAL_H
