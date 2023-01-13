@@ -50,8 +50,30 @@ public:
         (*m_ref_count)++;
     }
 
+    SmartPtr<T> &operator=(SmartPtr<T> &&other) {
+        if (this == &other) return *this;
+
+        if (m_ptr != NULL and --(*m_ref_count) == 0) {
+            delete m_ptr;
+            delete m_ref_count;
+        }
+        m_ptr = other.m_ptr;
+        m_ref_count = other.m_ref_count;
+
+        other.m_ref_count = NULL;
+        other.m_ptr = NULL;
+
+        return *this;
+    }
+
+
     int getRefCount() const {
         return *m_ref_count;
+    }
+
+    SmartPtr() {
+        m_ptr = NULL;
+        m_ref_count = NULL;
     }
 };
 
