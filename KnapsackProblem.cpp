@@ -20,9 +20,20 @@ bool KnapsackProblem::createTable(int capacity, int itemsNum, double *spaceTable
     return true;
 }
 
-double KnapsackProblem::calculateSolutionValue(int* gen) {
+double KnapsackProblem::calculateSolutionValue(int *gen) {
     double totalSpace = 0;
+    double totalValue = 0;
 
+    for (int i = 0; i < m_items->getItemsNum(); i++) {
+        if (gen[i] == 1) {
+            totalSpace += m_items->getSpace(i);
+            totalValue += m_items->getValue(i);
+        }
+    }
+    if (totalSpace > m_capacity) {
+        return 0;
+    }
+    return totalValue;
 }
 
 void KnapsackProblem::operator=(KnapsackProblem &other) {

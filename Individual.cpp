@@ -1,27 +1,54 @@
+#include <iostream>
+#include <cstring>
 #include "Individual.h"
+#include "Problem.h"
+#include "NumberGenerator.h"
 
 Individual::Individual(int size) {
     m_gen_size = size;
     m_gen = new int[m_gen_size];
+    m_adaptation = 0;
+
 }
 
 Individual::Individual() {
     m_gen_size = 0;
     m_gen = NULL;
-
+    m_adaptation = 0;
 }
 
-int Individual::calculateAdaptation() {
-    return 0;
+void Individual::calculateAdaptation(Problem *problem) {
+    m_adaptation = problem->calculateSolutionValue(m_gen);
 }
 
-void Individual::mutate() {
-
+void Individual::mutate(int nucleoidIdx) {
+    m_gen[nucleoidIdx] = 1 - m_gen[nucleoidIdx];
 }
+void printGen2(int *gen, int genSize) {
+    for (int i = 0; i < genSize; i++) {
+        std::cout << gen[i];
+    }
+    std::cout << ";;  ";
+}
+void Individual::cross(Individual *otherParent, Individual *child1, Individual *child2, NumberGenerator* numGen) {
+//    std::cout << std::endl;
+//    printGen(child1->m_gen, m_gen_size);
+//    printGen(child2->m_gen, m_gen_size);
+//    std::cout << std::endl;
 
-SmartPtr<Individual> Individual::cross() {
-    SmartPtr<Individual> newCross(NULL);
-    return newCross;
+    int crossPoint = numGen->generateFromRange(1, m_gen_size - 1);
+//    std::cout << crossPoint << "";
+    memcpy(child1->m_gen, m_gen, crossPoint * sizeof(int));
+    memcpy(child1->m_gen + crossPoint, otherParent->m_gen + crossPoint, (m_gen_size - crossPoint) * sizeof(int));
+
+    memcpy(child2->m_gen, otherParent->m_gen, crossPoint * sizeof(int));
+    memcpy(child2->m_gen + crossPoint, m_gen + crossPoint, (m_gen_size - crossPoint) * sizeof(int));
+//
+//std::cout << std::endl;
+//    printGen2(m_gen, m_gen_size);
+//    printGen2(otherParent->m_gen, m_gen_size);
+//    std::cout << std::endl;
+
 }
 
 Individual::~Individual() {
@@ -52,4 +79,13 @@ void Individual::operator=(Individual &other) {
     m_gen = other.m_gen;
 
 }
+
+int Individual::getGenSize() {
+    return m_gen_size;
+}
+
+double Individual::getAdaptation() {
+    return m_adaptation;
+}
+
 
