@@ -3,21 +3,21 @@
 
 class Items {
     int m_items_num;
-    double *m_value;
-    double *m_space;
+    float *m_value;
+    float *m_space;
 
 public:
-//    Items();
+    ~Items();
 
-    Items(int itemsNum, double *spaceTable, double *valueTables);
+    Items(int itemsNum, float *spaceTable, float *valueTables);
 
     Items &operator=(Items &&other);
 
     int getItemsNum() const;
 
-    double getValue(int idx) const;
+    float getValue(int idx) const;
 
-    double getSpace(int idx) const;
+    float getSpace(int idx) const;
 };
 
 #endif //GENETICALG_ITEMS_H

@@ -4,11 +4,11 @@
 
 class Problem {
 public:
-    virtual bool loadTableFromFile() = 0;
+    virtual bool loadTableFromFile(std::string &&filename) = 0;
 
-    virtual bool createTable(int capacity, int itemsNum, double *spaceTable, double *valueTables) = 0;
+    virtual bool createTable(float capacity, int itemsNum, float *spaceTable, float *valueTables) = 0;
 
-    virtual double calculateSolutionValue(int *gen) = 0;
+    virtual float calculateSolutionValue(short *gen) = 0;
 
     virtual int getGenSize() = 0;
 };

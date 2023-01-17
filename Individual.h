@@ -5,23 +5,19 @@
 #include "NumberGenerator.h"
 
 class Individual {
-public:
-    int *m_gen;
-
-private:
+    short *m_gen;
     int m_gen_size;
-    double m_adaptation;
+    float m_adaptation;
 
 public:
-    Individual();
 
-    Individual(int size);
+    Individual(int size, short *gen);
 
     ~Individual();
 
     void operator=(Individual &other);
 
-    Individual &operator=(Individual &&other);
+//    Individual &operator=(Individual &&other);
 
     void calculateAdaptation(Problem *problem);
 
@@ -29,9 +25,11 @@ public:
 
     void cross(Individual *otherParent, Individual *child1, Individual *child2, NumberGenerator *numGen);
 
+    short *getGen() const;
+
     int getGenSize();
 
-    double getAdaptation();
+    float getAdaptation();
 
 };
 

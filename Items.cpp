@@ -1,13 +1,7 @@
 #include <iostream>
 #include "Items.h"
 
-//Items::Items() {
-//    m_items_num = 0;
-//    m_space = NULL;
-//    m_value = NULL;
-//}
-
-Items::Items(int itemsNum, double *spaceTable, double *valueTables) {
+Items::Items(int itemsNum, float *spaceTable, float *valueTables) {
     m_items_num = itemsNum;
     m_space = spaceTable;
     m_value = valueTables;
@@ -30,12 +24,18 @@ int Items::getItemsNum() const {
     return m_items_num;
 }
 
-double Items::getValue(int idx) const {
+float Items::getValue(int idx) const {
     return m_value[idx];
 }
 
-double Items::getSpace(int idx) const {
+float Items::getSpace(int idx) const {
     return m_space[idx];
+}
+
+Items::~Items() {
+    delete[] m_space;
+    delete[] m_value;
+
 }
 
 

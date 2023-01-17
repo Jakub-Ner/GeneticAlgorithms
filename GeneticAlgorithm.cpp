@@ -13,18 +13,16 @@ GeneticAlgorithm::GeneticAlgorithm(int popSize, double crossProb, double mutProb
 
     m_num_generator = new NumberGenerator();
     generatePop();
+    m_best_solution = new Individual(m_problem->getGenSize(), new short[m_problem->getGenSize()]);
 }
 
-void printAllSolution(Individual **population, int popSize, int shift) {
-    for (int i = shift; i < popSize + shift; i++) {
-        std::cout << ";; ";
-        for (int j = 0; j < population[i]->getGenSize(); j++) {
-            std::cout << population[i]->m_gen[j];
-            if (j + 1 == population[i]->getGenSize())
-                std::cout << "A:" << population[i]->getAdaptation();
-        }
+
+void GeneticAlgorithm::printSolution(Individual *pIndividual) {
+    for (int i = 0; i < pIndividual->getGenSize(); i++) {
+        std::cout << pIndividual->getGen()[i];
     }
-    std::cout << "\n";
+    std::cout << ": " << pIndividual->getAdaptation();
+
 }
 
 void GeneticAlgorithm::generatePop() {
@@ -33,17 +31,14 @@ void GeneticAlgorithm::generatePop() {
     int genSize = m_problem->getGenSize();
 
     for (int i = 0; i < m_pop_size; i++) {
-        m_population[i] = new Individual(genSize);
-        m_population[i + m_pop_size] = new Individual(genSize);
-        std::cout << "; ";
+        short *gen = new short[genSize];
         for (int j = 0; j < genSize; j++) {
-            int nucleotide = m_num_generator->generate();
-            m_population[i]->m_gen[j] = nucleotide;
-            m_population[i + m_pop_size]->m_gen[j] = nucleotide;
-            std::cout << m_population[i + m_pop_size]->m_gen[j];
+            short nucleotide = m_num_generator->generate();
+            gen[j] = nucleotide;
         }
+        m_population[i] = new Individual(genSize, gen);
+        m_population[i + m_pop_size] = new Individual(genSize, new short[genSize]);
     }
-    std::cout << std::endl;
 }
 
 void GeneticAlgorithm::findBestSolution(int iterationsNumber) {
@@ -51,6 +46,11 @@ void GeneticAlgorithm::findBestSolution(int iterationsNumber) {
     int shift = 0;
     for (int j = 0; j < iterationsNumber; j++) {
         adaptPopulation(shift);
+        findBest();
+        if (j % 100 == 0) {
+            std::cout << "\nBest solution: ";
+            printSolution(m_best_solution);
+        }
 
         m_num_generator->setRange(shift, m_pop_size + shift - 1);
         even = (even + 1) % 2;
@@ -61,8 +61,7 @@ void GeneticAlgorithm::findBestSolution(int iterationsNumber) {
 
     }
     adaptPopulation(shift);
-    printAllSolution(m_population, m_pop_size, shift); // print parents
-    m_best_solution = findBest();
+    findBest();
 }
 
 void GeneticAlgorithm::adaptPopulation(int shift) {
@@ -93,8 +92,8 @@ void GeneticAlgorithm::applyMut2Individual(Individual *pIndividual) {
 
 void GeneticAlgorithm::applyCross2Individual(int childIdx) {
     if (shouldCross()) {
-        Individual *first = selectParent(); // instead of Individual first = selectParent()
-        Individual *second = selectParent(); // instead of Individual first = selectParent()
+        Individual *first = selectParent();
+        Individual *second = selectParent();
 
         first->cross(second, m_population[childIdx], m_population[childIdx + 1], m_num_generator);
     }
@@ -114,14 +113,12 @@ Individual *GeneticAlgorithm::selectParent() {
     return first->getAdaptation() > second->getAdaptation() ? first : second;
 }
 
-Individual *GeneticAlgorithm::findBest() {
-    Individual *best = m_population[0];
+void GeneticAlgorithm::findBest() {
     for (int i = 0; i < m_pop_size; i++) {
-        if (m_population[i]->getAdaptation() > best->getAdaptation()) {
-            best = m_population[i];
+        if (m_population[i]->getAdaptation() > m_best_solution->getAdaptation()) {
+            *m_best_solution = *m_population[i];
         }
     }
-    return best;
 }
 
 GeneticAlgorithm::~GeneticAlgorithm() {
@@ -133,6 +130,9 @@ GeneticAlgorithm::~GeneticAlgorithm() {
     }
     if (m_num_generator != NULL) {
         delete m_num_generator;
+    }
+    if (m_best_solution != NULL) {
+        delete m_best_solution;
     }
 
 }

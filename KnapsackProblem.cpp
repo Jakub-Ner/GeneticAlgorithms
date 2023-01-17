@@ -1,4 +1,5 @@
 #include "KnapsackProblem.h"
+#include "FileReader.h"
 #include <iostream>
 
 KnapsackProblem::KnapsackProblem() {
@@ -6,13 +7,27 @@ KnapsackProblem::KnapsackProblem() {
     m_items = NULL;
 }
 
-// TODO
-bool KnapsackProblem::loadTableFromFile() {
-    return false;
+bool KnapsackProblem::loadTableFromFile(std::string &&filename) {
+    FileReader fileReader("/home/jakubner/CLionProjects/GeneticAlg/data.txt");
+
+    int itemsNum;
+    float *spaceTable;
+    float *valueTable;
+    bool ok = fileReader.readFromFile(&m_capacity, &itemsNum, &spaceTable, &valueTable);
+    if (!ok) {
+        return false;
+    }
+    m_items = new Items(itemsNum, spaceTable, valueTable);
+    return true;
 }
 
-bool KnapsackProblem::createTable(int capacity, int itemsNum, double *spaceTable, double *valueTables) {
-    if (capacity <= 0 || itemsNum <= 0 || spaceTable == NULL || valueTables == NULL) {
+bool KnapsackProblem::createTable(float capacity, int itemsNum, float *spaceTable, float *valueTables) {
+    if (spaceTable == NULL || valueTables == NULL) {
+        return false;
+    }
+    if (capacity <= 0 || itemsNum <= 0) {
+        delete[] spaceTable;
+        delete[] valueTables;
         return false;
     }
     m_capacity = capacity;
@@ -20,9 +35,9 @@ bool KnapsackProblem::createTable(int capacity, int itemsNum, double *spaceTable
     return true;
 }
 
-double KnapsackProblem::calculateSolutionValue(int *gen) {
-    double totalSpace = 0;
-    double totalValue = 0;
+float KnapsackProblem::calculateSolutionValue(short *gen) {
+    float totalSpace = 0;
+    float totalValue = 0;
 
     for (int i = 0; i < m_items->getItemsNum(); i++) {
         if (gen[i] == 1) {

@@ -2,21 +2,22 @@
 #define GENETICALG_KNAPSACKPROBLEM_H
 
 
+#include <string>
 #include "Items.h"
 #include "Problem.h"
 
 class KnapsackProblem : public Problem {
     Items *m_items;
-    int m_capacity;
+    float m_capacity;
 
 public:
     KnapsackProblem();
 
-    bool loadTableFromFile() override;
+    bool loadTableFromFile(std::string &&filename) override;
 
-    bool createTable(int capacity, int itemsNum, double *spaceTable, double *valueTables) override;
+    bool createTable(float capacity, int itemsNum, float *spaceTable, float *valueTables) override;
 
-    double calculateSolutionValue(int *gen) override;
+    float calculateSolutionValue(short *gen) override;
 
     int getGenSize() override;
 

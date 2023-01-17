@@ -30,7 +30,7 @@ public:
 private:
     void generatePop();
 
-    Individual *findBest();
+    void findBest();
 
     Individual *selectParent();
 
@@ -43,6 +43,8 @@ private:
     void mutatePopulation(int shift);
 
     void adaptPopulation(int shift);
+
+    void printSolution(Individual *pIndividual);
 };
 
 
