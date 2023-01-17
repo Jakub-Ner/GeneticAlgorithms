@@ -11,7 +11,7 @@ public:
 
     Items(int itemsNum, double *spaceTable, double *valueTables);
 
-    Items& operator=(Items&& other);
+    Items &operator=(Items &&other);
 
     int getItemsNum() const;
 

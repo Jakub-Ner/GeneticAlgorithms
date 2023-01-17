@@ -23,7 +23,7 @@ public:
 
     void findBestSolution(int iterationsNumber);
 
-    void applyCross(int childIdx);
+    void applyCross2Individual(int childIdx);
 
     Individual *getBestSolution();
 
@@ -36,7 +36,13 @@ private:
 
     bool shouldCross();
 
-    void applyMut(Individual *pIndividual);
+    void applyMut2Individual(Individual *pIndividual);
+
+    void crossPopulation(int shift);
+
+    void mutatePopulation(int shift);
+
+    void adaptPopulation(int shift);
 };
 
 

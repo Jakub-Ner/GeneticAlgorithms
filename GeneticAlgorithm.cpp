@@ -10,6 +10,7 @@ GeneticAlgorithm::GeneticAlgorithm(int popSize, double crossProb, double mutProb
 
     m_problem = problem;
     m_population = new Individual *[2 * popSize];
+
     m_num_generator = new NumberGenerator();
     generatePop();
 }
@@ -19,8 +20,8 @@ void printAllSolution(Individual **population, int popSize, int shift) {
         std::cout << ";; ";
         for (int j = 0; j < population[i]->getGenSize(); j++) {
             std::cout << population[i]->m_gen[j];
-            if (j+1 == population[i]->getGenSize())
-                std::cout<<"A:"<<population[i]->getAdaptation();
+            if (j + 1 == population[i]->getGenSize())
+                std::cout << "A:" << population[i]->getAdaptation();
         }
     }
     std::cout << "\n";
@@ -47,34 +48,42 @@ void GeneticAlgorithm::generatePop() {
 
 void GeneticAlgorithm::findBestSolution(int iterationsNumber) {
     int even = 0;
+    int shift = 0;
     for (int j = 0; j < iterationsNumber; j++) {
-        int shift = even * m_pop_size;
-
-        for (int i = 0; i < m_pop_size; i++) {
-            m_population[i + shift]->calculateAdaptation(m_problem);
-        }
+        adaptPopulation(shift);
 
         m_num_generator->setRange(shift, m_pop_size + shift - 1);
-        int counterShift = ((even + 1) % 2) * m_pop_size;
-        for (int i = 0; i < m_pop_size / 2; i++) {
-            applyCross(i + counterShift); // what if pop_size is uneven
-        }
-
-        for (int i = 0; i < m_pop_size; i++) {
-            applyMut(m_population[i + counterShift]);
-        }
-        printAllSolution(m_population, m_pop_size, shift); // print parents
         even = (even + 1) % 2;
-    }
+        shift = even * m_pop_size;
 
-    for (int i = 0; i < m_pop_size; i++) {
-        m_population[i + even * m_pop_size]->calculateAdaptation(m_problem);
+        crossPopulation(shift);
+        mutatePopulation(shift);
+
     }
-    printAllSolution(m_population, m_pop_size, even * m_pop_size); // print parents
+    adaptPopulation(shift);
+    printAllSolution(m_population, m_pop_size, shift); // print parents
     m_best_solution = findBest();
 }
 
-void GeneticAlgorithm::applyMut(Individual *pIndividual) {
+void GeneticAlgorithm::adaptPopulation(int shift) {
+    for (int i = 0; i < m_pop_size; i++) {
+        m_population[i + shift]->calculateAdaptation(m_problem);
+    }
+}
+
+void GeneticAlgorithm::crossPopulation(int shift) {
+    for (int i = 0; i < m_pop_size / 2; i++) {
+        applyCross2Individual(i + shift); // what if pop_size is uneven
+    }
+}
+
+void GeneticAlgorithm::mutatePopulation(int shift) {
+    for (int i = 0; i < m_pop_size; i++) {
+        applyMut2Individual(m_population[i + shift]);
+    }
+}
+
+void GeneticAlgorithm::applyMut2Individual(Individual *pIndividual) {
     for (int i = 0; i < pIndividual->getGenSize(); i++) {
         if (m_num_generator->generate() < m_mut_prob) {
             pIndividual->mutate(0);
@@ -82,26 +91,12 @@ void GeneticAlgorithm::applyMut(Individual *pIndividual) {
     }
 }
 
-void printGen(int *gen, int genSize) {
-    for (int i = 0; i < genSize; i++) {
-        std::cout << gen[i];
-    }
-    std::cout << ";;  ";
-}
-
-void GeneticAlgorithm::applyCross(int childIdx) {
+void GeneticAlgorithm::applyCross2Individual(int childIdx) {
     if (shouldCross()) {
-        Individual *first = selectParent();
-        Individual *second = selectParent();
+        Individual *first = selectParent(); // instead of Individual first = selectParent()
+        Individual *second = selectParent(); // instead of Individual first = selectParent()
 
-//        std::cout<<"\n";
-//        printGen(m_population[childIdx]->m_gen, m_population[childIdx]->getGenSize());
-//        printGen(m_population[childIdx + 1]->m_gen, m_population[childIdx + 1]->getGenSize());
         first->cross(second, m_population[childIdx], m_population[childIdx + 1], m_num_generator);
-
-//        printGen(m_population[childIdx]->m_gen, m_population[childIdx]->getGenSize());
-//        printGen(m_population[childIdx + 1]->m_gen, m_population[childIdx + 1]->getGenSize());
-//        std::cout<<"\n";
     }
 }
 

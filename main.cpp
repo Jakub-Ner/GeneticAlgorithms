@@ -6,11 +6,9 @@
 
 void testAlg();
 
-void test();
 
 int main() {
     testAlg();
-//    test();
     return 0;
 }
 
@@ -34,23 +32,3 @@ void testAlg() {
     delete[] spaceTable;
 }
 
-void test() {
-//    int *tab = new int[]{1, 2, 3, 4, 5};
-    Individual **ind = new Individual *[10];
-    for (int i = 0; i < 5; i++) {
-        ind[i] = new Individual(5);
-        ind[i + 5] = new Individual(5);
-        for (int j = 0; j < 5; j++) {
-            ind[i]->m_gen[j] = i;
-            ind[i + 5]->m_gen[j] = i;
-        }
-    }
-    for (int i = 0; i < 10; i++)
-        for (int j = 0; j < 5; j++)
-            std::cout << ind[i]->m_gen[j] << " ";
-
-//    memcpy(tab2 + 1, tab + 1, 4 * sizeof(int));
-//    for (int i = 0; i < 5; i++) {
-//        std::cout << tab2[i] << " ";
-//    }
-}

@@ -24,31 +24,22 @@ void Individual::calculateAdaptation(Problem *problem) {
 void Individual::mutate(int nucleoidIdx) {
     m_gen[nucleoidIdx] = 1 - m_gen[nucleoidIdx];
 }
+
 void printGen2(int *gen, int genSize) {
     for (int i = 0; i < genSize; i++) {
         std::cout << gen[i];
     }
     std::cout << ";;  ";
 }
-void Individual::cross(Individual *otherParent, Individual *child1, Individual *child2, NumberGenerator* numGen) {
-//    std::cout << std::endl;
-//    printGen(child1->m_gen, m_gen_size);
-//    printGen(child2->m_gen, m_gen_size);
-//    std::cout << std::endl;
 
+void Individual::cross(Individual *otherParent, Individual *child1, Individual *child2, NumberGenerator *numGen) {
     int crossPoint = numGen->generateFromRange(1, m_gen_size - 1);
-//    std::cout << crossPoint << "";
+
     memcpy(child1->m_gen, m_gen, crossPoint * sizeof(int));
     memcpy(child1->m_gen + crossPoint, otherParent->m_gen + crossPoint, (m_gen_size - crossPoint) * sizeof(int));
 
     memcpy(child2->m_gen, otherParent->m_gen, crossPoint * sizeof(int));
     memcpy(child2->m_gen + crossPoint, m_gen + crossPoint, (m_gen_size - crossPoint) * sizeof(int));
-//
-//std::cout << std::endl;
-//    printGen2(m_gen, m_gen_size);
-//    printGen2(otherParent->m_gen, m_gen_size);
-//    std::cout << std::endl;
-
 }
 
 Individual::~Individual() {
