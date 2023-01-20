@@ -17,7 +17,7 @@ class GeneticAlgorithm {
     NumberGenerator *m_num_generator;
 public:
 
-    GeneticAlgorithm(int popSize, double crossProb, double mutProb, Problem *problem);
+    GeneticAlgorithm(int popSize, double crossProb, double mutProb, Problem *problem, int seed);
 
     ~GeneticAlgorithm();
 

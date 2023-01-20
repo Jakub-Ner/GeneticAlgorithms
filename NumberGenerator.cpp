@@ -1,6 +1,12 @@
 #include "NumberGenerator.h"
 
-NumberGenerator::NumberGenerator() {
+
+NumberGenerator::NumberGenerator(int seed) {
+    if (seed == 0) {
+        m_gen.seed(m_rd());
+    } else {
+        m_gen.seed(seed);
+    }
     m_real_distrib = std::uniform_real_distribution<>(0.0, 1.0);
 }
 

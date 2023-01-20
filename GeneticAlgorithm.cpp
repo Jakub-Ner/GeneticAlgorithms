@@ -3,7 +3,7 @@
 
 #include "GeneticAlgorithm.h"
 
-GeneticAlgorithm::GeneticAlgorithm(int popSize, double crossProb, double mutProb, Problem *problem) {
+GeneticAlgorithm::GeneticAlgorithm(int popSize, double crossProb, double mutProb, Problem *problem, int seed) {
     m_pop_size = popSize % 2 == 0 ? popSize : popSize + 1;
     m_cross_prob = crossProb;
     m_mut_prob = mutProb;
@@ -11,7 +11,7 @@ GeneticAlgorithm::GeneticAlgorithm(int popSize, double crossProb, double mutProb
     m_problem = problem;
     m_population = new Individual[2 * m_pop_size];
 
-    m_num_generator = new NumberGenerator();
+    m_num_generator = new NumberGenerator(seed);
     generatePop();
     m_best_solution = new Individual(m_problem->getGenSize(), new short[m_problem->getGenSize()]);
 }

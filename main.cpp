@@ -21,7 +21,7 @@ void testAlg() {
     KnapsackProblem *problem = new KnapsackProblem();
     problem->loadTableFromFile("/home/jakubner/CLionProjects/GeneticAlg/data.txt");
 
-    GeneticAlgorithm *algorithm = new GeneticAlgorithm(500, 0.6, 0.1, problem);
+    GeneticAlgorithm *algorithm = new GeneticAlgorithm(500, 0.6, 0.1, problem, -5);
     algorithm->findBestSolution(5000);
 
 
