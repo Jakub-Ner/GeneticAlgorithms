@@ -18,7 +18,7 @@ public:
 
     bool createTable(float capacity, int itemsNum, float *spaceTable, float *valueTables) override;
 
-    float calculateSolutionValue(short *gen) override;
+    float calculateSolutionValue(bool *gen) override;
 
     int getGenSize() override;
 

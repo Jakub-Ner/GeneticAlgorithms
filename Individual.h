@@ -6,7 +6,7 @@
 
 class Individual {
 
-    short *m_gen;
+    bool *m_gen;
     int m_gen_size;
     float m_adaptation;
 
@@ -14,9 +14,9 @@ public:
 
     Individual();
 
-    Individual(int size, short *gen);
+    Individual(int size, bool *gen);
 
-    void init(int size, short *gen);
+    void init(int size, bool *gen);
 
     ~Individual();
 
@@ -29,7 +29,7 @@ public:
 
     void cross(Individual *otherParent, Individual *child1, Individual *child2, NumberGenerator *numGen);
 
-    short *getGen() const;
+    bool *getGen() const;
 
     int getGenSize();
 

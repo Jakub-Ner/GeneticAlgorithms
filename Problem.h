@@ -8,7 +8,7 @@ public:
 
     virtual bool createTable(float capacity, int itemsNum, float *spaceTable, float *valueTables) = 0;
 
-    virtual float calculateSolutionValue(short *gen) = 0;
+    virtual float calculateSolutionValue(bool *gen) = 0;
 
     virtual int getGenSize() = 0;
 };

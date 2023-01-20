@@ -34,12 +34,12 @@ bool KnapsackProblem::createTable(float capacity, int itemsNum, float *spaceTabl
     return true;
 }
 
-float KnapsackProblem::calculateSolutionValue(short *gen) {
+float KnapsackProblem::calculateSolutionValue(bool *gen) {
     float totalSpace = 0;
     float totalValue = 0;
 
     for (int i = 0; i < m_items->getItemsNum(); i++) {
-        if (gen[i] == 1) {
+        if (gen[i] == true) {
             totalSpace += m_items->getSpace(i);
             totalValue += m_items->getValue(i);
         }

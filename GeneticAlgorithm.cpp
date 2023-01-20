@@ -13,7 +13,7 @@ GeneticAlgorithm::GeneticAlgorithm(int popSize, double crossProb, double mutProb
 
     m_num_generator = new NumberGenerator(seed);
     generatePop();
-    m_best_solution = new Individual(m_problem->getGenSize(), new short[m_problem->getGenSize()]);
+    m_best_solution = new Individual(m_problem->getGenSize(), new bool[m_problem->getGenSize()]);
 }
 
 
@@ -31,13 +31,13 @@ void GeneticAlgorithm::generatePop() {
     int genSize = m_problem->getGenSize();
 
     for (int i = 0; i < m_pop_size; i++) {
-        short *gen = new short[genSize];
+        bool *gen = new bool[genSize];
         for (int j = 0; j < genSize; j++) {
-            short nucleotide = m_num_generator->generate();
+            bool nucleotide = m_num_generator->generate();
             gen[j] = nucleotide;
         }
         m_population[i].init(genSize, gen);
-        m_population[i + m_pop_size].init(genSize, new short[genSize]);
+        m_population[i + m_pop_size].init(genSize, new bool[genSize]);
     }
 }
 
