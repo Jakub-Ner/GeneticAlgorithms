@@ -7,11 +7,11 @@
 
 class GeneticAlgorithm {
     int m_pop_size;
-    double m_cross_prob; // pstwo krzzowania
-    double m_mut_prob;   // pstwo mutacji
+    double m_cross_prob;
+    double m_mut_prob;
 
     Problem *m_problem;
-    Individual **m_population;
+    Individual *m_population;
     Individual *m_best_solution;
 
     NumberGenerator *m_num_generator;

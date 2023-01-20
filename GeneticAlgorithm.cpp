@@ -4,16 +4,17 @@
 #include "GeneticAlgorithm.h"
 
 GeneticAlgorithm::GeneticAlgorithm(int popSize, double crossProb, double mutProb, Problem *problem) {
-    m_pop_size = popSize;
+    m_pop_size = popSize % 2 == 0 ? popSize: popSize + 1;
     m_cross_prob = crossProb;
     m_mut_prob = mutProb;
 
     m_problem = problem;
-    m_population = new Individual *[2 * popSize];
+    m_population = new Individual [2 * m_pop_size];
 
     m_num_generator = new NumberGenerator();
     generatePop();
-    m_best_solution = new Individual(m_problem->getGenSize(), new short[m_problem->getGenSize()]);
+    m_best_solution = new Individual();
+    m_best_solution->init(m_problem->getGenSize(), new short[m_problem->getGenSize()]);
 }
 
 
@@ -36,12 +37,14 @@ void GeneticAlgorithm::generatePop() {
             short nucleotide = m_num_generator->generate();
             gen[j] = nucleotide;
         }
-        m_population[i] = new Individual(genSize, gen);
-        m_population[i + m_pop_size] = new Individual(genSize, new short[genSize]);
+        m_population[i].init(genSize, gen);
+        m_population[i + m_pop_size].init(genSize, new short[genSize]);
     }
 }
 
 void GeneticAlgorithm::findBestSolution(int iterationsNumber) {
+    if (m_problem->getGenSize() == 0) return;
+
     int even = 0;
     int shift = 0;
     for (int j = 0; j < iterationsNumber; j++) {
@@ -66,7 +69,7 @@ void GeneticAlgorithm::findBestSolution(int iterationsNumber) {
 
 void GeneticAlgorithm::adaptPopulation(int shift) {
     for (int i = 0; i < m_pop_size; i++) {
-        m_population[i + shift]->calculateAdaptation(m_problem);
+        m_population[i + shift].calculateAdaptation(m_problem);
     }
 }
 
@@ -78,7 +81,7 @@ void GeneticAlgorithm::crossPopulation(int shift) {
 
 void GeneticAlgorithm::mutatePopulation(int shift) {
     for (int i = 0; i < m_pop_size; i++) {
-        applyMut2Individual(m_population[i + shift]);
+        applyMut2Individual(&m_population[i + shift]);
     }
 }
 
@@ -95,7 +98,7 @@ void GeneticAlgorithm::applyCross2Individual(int childIdx) {
         Individual *first = selectParent();
         Individual *second = selectParent();
 
-        first->cross(second, m_population[childIdx], m_population[childIdx + 1], m_num_generator);
+        first->cross(second, &m_population[childIdx], &m_population[childIdx + 1], m_num_generator);
     }
 }
 
@@ -108,24 +111,21 @@ bool GeneticAlgorithm::shouldCross() {
 }
 
 Individual *GeneticAlgorithm::selectParent() {
-    Individual *first = m_population[m_num_generator->generate()];
-    Individual *second = m_population[m_num_generator->generate()];
+    Individual *first = &m_population[m_num_generator->generate()];
+    Individual *second = &m_population[m_num_generator->generate()];
     return first->getAdaptation() > second->getAdaptation() ? first : second;
 }
 
 void GeneticAlgorithm::findBest() {
     for (int i = 0; i < m_pop_size; i++) {
-        if (m_population[i]->getAdaptation() > m_best_solution->getAdaptation()) {
-            *m_best_solution = *m_population[i];
+        if (m_population[i].getAdaptation() > m_best_solution->getAdaptation()) {
+            *m_best_solution = m_population[i];
         }
     }
 }
 
 GeneticAlgorithm::~GeneticAlgorithm() {
     if (m_population != NULL) {
-        for (int i = 0; i < 2 * m_pop_size; i++) {
-            delete m_population[i];
-        }
         delete[] m_population;
     }
     if (m_num_generator != NULL) {

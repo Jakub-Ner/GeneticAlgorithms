@@ -1,6 +1,5 @@
 #include "KnapsackProblem.h"
 #include "FileReader.h"
-#include <iostream>
 
 KnapsackProblem::KnapsackProblem() {
     m_capacity = 0;
@@ -61,5 +60,14 @@ void KnapsackProblem::operator=(KnapsackProblem &other) {
 }
 
 int KnapsackProblem::getGenSize() {
+    if (m_items == NULL){
+        return 0;
+    }
     return m_items->getItemsNum();
+}
+
+KnapsackProblem::~KnapsackProblem() {
+    if (m_items != NULL){
+        delete m_items;
+    }
 }

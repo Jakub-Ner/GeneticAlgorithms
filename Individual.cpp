@@ -4,10 +4,16 @@
 #include "Problem.h"
 #include "NumberGenerator.h"
 
-Individual::Individual(int size, short *gen) {
+Individual::Individual() {
+    m_gen = NULL;
+    m_gen_size = 0;
+    m_adaptation = 0;
+}
+
+
+void Individual::init(int size, short *gen) {
     m_gen_size = size;
     m_gen = gen;
-    m_adaptation = 0;
 }
 
 
@@ -42,16 +48,6 @@ Individual::~Individual() {
     }
 }
 
-//Individual &Individual::operator=(Individual &&other) {
-//    if (this == &other) return *this;
-//    if (m_gen != NULL) {
-//        delete[] m_gen;
-//    }
-//    m_gen = other.m_gen;
-//    m_gen_size = other.m_gen_size;
-//    other.m_gen = NULL;
-//    return *this;
-//}
 
 void Individual::operator=(Individual &other) {
     if (this == &other) {

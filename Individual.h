@@ -11,13 +11,14 @@ class Individual {
 
 public:
 
-    Individual(int size, short *gen);
+    Individual();
+
+    void init(int size, short *gen);
 
     ~Individual();
 
     void operator=(Individual &other);
 
-//    Individual &operator=(Individual &&other);
 
     void calculateAdaptation(Problem *problem);
 

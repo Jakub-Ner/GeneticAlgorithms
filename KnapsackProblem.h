@@ -1,7 +1,6 @@
 #ifndef GENETICALG_KNAPSACKPROBLEM_H
 #define GENETICALG_KNAPSACKPROBLEM_H
 
-
 #include <string>
 #include "Items.h"
 #include "Problem.h"
@@ -12,6 +11,8 @@ class KnapsackProblem : public Problem {
 
 public:
     KnapsackProblem();
+
+    ~KnapsackProblem();
 
     bool loadTableFromFile(std::string &&filename) override;
 

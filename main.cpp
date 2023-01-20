@@ -22,7 +22,7 @@ void testAlg() {
     problem->loadTableFromFile("/home/jakubner/CLionProjects/GeneticAlg/data.txt");
 
     GeneticAlgorithm *algorithm = new GeneticAlgorithm(500, 0.6, 0.1, problem);
-    algorithm->findBestSolution(10000);
+    algorithm->findBestSolution(5000);
 
 
     delete algorithm;
