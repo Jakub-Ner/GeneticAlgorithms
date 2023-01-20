@@ -4,17 +4,16 @@
 #include "GeneticAlgorithm.h"
 
 GeneticAlgorithm::GeneticAlgorithm(int popSize, double crossProb, double mutProb, Problem *problem) {
-    m_pop_size = popSize % 2 == 0 ? popSize: popSize + 1;
+    m_pop_size = popSize % 2 == 0 ? popSize : popSize + 1;
     m_cross_prob = crossProb;
     m_mut_prob = mutProb;
 
     m_problem = problem;
-    m_population = new Individual [2 * m_pop_size];
+    m_population = new Individual[2 * m_pop_size];
 
     m_num_generator = new NumberGenerator();
     generatePop();
-    m_best_solution = new Individual();
-    m_best_solution->init(m_problem->getGenSize(), new short[m_problem->getGenSize()]);
+    m_best_solution = new Individual(m_problem->getGenSize(), new short[m_problem->getGenSize()]);
 }
 
 
@@ -75,7 +74,7 @@ void GeneticAlgorithm::adaptPopulation(int shift) {
 
 void GeneticAlgorithm::crossPopulation(int shift) {
     for (int i = 0; i < m_pop_size / 2; i++) {
-        applyCross2Individual(i + shift); // what if pop_size is uneven
+        applyCross2Individual(i + shift);
     }
 }
 

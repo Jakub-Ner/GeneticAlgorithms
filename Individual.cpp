@@ -10,6 +10,10 @@ Individual::Individual() {
     m_adaptation = 0;
 }
 
+Individual::Individual(int size, short *gen) {
+    init(size, gen);
+    m_adaptation = 0;
+}
 
 void Individual::init(int size, short *gen) {
     m_gen_size = size;

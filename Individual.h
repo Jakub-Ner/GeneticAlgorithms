@@ -5,6 +5,7 @@
 #include "NumberGenerator.h"
 
 class Individual {
+
     short *m_gen;
     int m_gen_size;
     float m_adaptation;
@@ -12,6 +13,8 @@ class Individual {
 public:
 
     Individual();
+
+    Individual(int size, short *gen);
 
     void init(int size, short *gen);
 
