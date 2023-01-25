@@ -49,7 +49,7 @@ void GeneticAlgorithm::findBestSolution(int iterationsNumber) {
     for (int j = 0; j < iterationsNumber; j++) {
         adaptPopulation(shift);
         findBest();
-        if (j % 100 == 0) {
+        if (j % 200 == 0) {
             std::cout << "\nBest solution: ";
             printSolution(m_best_solution);
         }
@@ -64,6 +64,8 @@ void GeneticAlgorithm::findBestSolution(int iterationsNumber) {
     }
     adaptPopulation(shift);
     findBest();
+    std::cout << "\nBest solution: ";
+    printSolution(m_best_solution);
 }
 
 void GeneticAlgorithm::adaptPopulation(int shift) {
@@ -86,27 +88,19 @@ void GeneticAlgorithm::mutatePopulation(int shift) {
 
 void GeneticAlgorithm::applyMut2Individual(Individual *pIndividual) {
     for (int i = 0; i < pIndividual->getGenSize(); i++) {
-        if (m_num_generator->generate() < m_mut_prob) {
+        if (m_num_generator->generateDouble() < m_mut_prob) {
             pIndividual->mutate(0);
         }
     }
 }
 
 void GeneticAlgorithm::applyCross2Individual(int childIdx) {
-    if (shouldCross()) {
+    if (m_num_generator->generateDouble() < m_cross_prob) {
         Individual *first = selectParent();
         Individual *second = selectParent();
 
         first->cross(second, &m_population[childIdx], &m_population[childIdx + 1], m_num_generator);
     }
-}
-
-bool GeneticAlgorithm::shouldCross() {
-    double crossValue = m_num_generator->generateDouble();
-    if (crossValue < m_cross_prob) {
-        return true;
-    }
-    return false;
 }
 
 Individual *GeneticAlgorithm::selectParent() {

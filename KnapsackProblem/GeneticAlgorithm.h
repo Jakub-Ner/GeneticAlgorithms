@@ -34,8 +34,6 @@ private:
 
     Individual *selectParent();
 
-    bool shouldCross();
-
     void applyMut2Individual(Individual *pIndividual);
 
     void crossPopulation(int shift);

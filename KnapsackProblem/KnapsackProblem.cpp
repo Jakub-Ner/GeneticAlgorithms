@@ -7,7 +7,7 @@ KnapsackProblem::KnapsackProblem() {
 }
 
 bool KnapsackProblem::loadTableFromFile(std::string &&filename) {
-    FileReader fileReader("/home/jakubner/CLionProjects/GeneticAlg/data.txt");
+    FileReader fileReader(filename);
 
     int itemsNum;
     float *spaceTable;
